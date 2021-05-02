@@ -13,30 +13,30 @@ mongoose.connect('mongodb://localhost:27017/gifts', {useNewUrlParser: true, useU
 const Users = require('./models/Users');
 
 // let myUser = new Users({
-// email: 'michelle@codefellows.com'
+//   email: 'michelle@codefellows.com'
 // });
 // myUser.save().then(() => console.log('user saved'));
 app.get('/', (req, res) => {
-  User.find((err, userData) => {
+  Users.find((err, userData) => {
     res.send(userData);
   });
 });
 // colon at the start of :email makes it a parameter
-app.get('/users/:email', (req, res) => {
-  Users.find({email: req.params.email}, (err, userData) => {
+app.get('/users/:potato', (req, res) => {
+  Users.find({email: req.params.potato}, (err, userData) => {
     res.send(userData);
   });
 });
 
 app.post('/gifts', (req, res) => {
   // for post requests, data is inside of the body
-  // as long
+  // as long as we have the app.use(express.json()) line at the top of the file
   console.log(req.body);
-
+  // find the relevant user in the database
   Users.find({email: req.body.email}, (err, userData) => {
     if(userData.length < 1) {
-      res.status(400). send('user does not exist');
-    }else {
+      res.status(400).send('user does not exist');
+    } else {
       // add the new gift info to that user
       let user = userData[0];
       user.gifts.push({
